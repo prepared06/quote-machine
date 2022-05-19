@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quote machine</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="wrapper" class="container d-flex align-items-center">
+        <div id="quote-box" class="col-md-8 mx-auto">
+          <div id="text"><i class="fa fa-quote-left"></i><span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</span></div>
+          <div id="author" class="d-flex justify-content-end">Cicero</div>
+          <div class='d-flex justify-content-between pt-4'>
+          <a id="tweet-quote" href="https://twitter.com/intent/tweet" class="col-3 ">
+            <i class="fa fa-twitter"></i>
+          </a>
+          <button id="new-quote" class="col-3 p-2">New quote</button>
+          </div>
+        </div>
+      </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+<script>
+let colors=[
+  '#16a085',
+  '#27ae60',
+  '#2c3e50',
+  '#f39c12',
+  '#e74c3c',
+  '#9b59b6',
+  '#FB6964',
+  '#342224',
+  '#472E32',
+  '#BDBB99',
+  '#77B1A9',
+  '#73A857'
+];
+  //starting settings
+function settings(){
+  let index = Math.floor(Math.random()*12);
+  let color= colors[index];
+  
+  
+  $('#text').css('color',color);
+  $('#author').css('color',color);
+  $('#tweet-quote').css('color',color);
+  $('#new-quote').css('background-color',color);
+  $('body').css('background-color',color);
+  //get-out quote
+  $.ajax({
+    headers: {
+      Accept: 'application/json'
+    }, url:'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json',
+    success: function (jsonQuotes) {
+      if (typeof jsonQuotes === 'string') {
+        quotesData = JSON.parse(jsonQuotes);
+        let index = Math.floor(Math.random()*quotesData.quotes.length)     
+        let ranQuote=quotesData.quotes[index].quote;
+        let author=quotesData.quotes[index].author;
+        
+        $("#text span").text(ranQuote);
+        $("#author").text(author);
+      }
+    }
+  });
+  
+  
+  
+}
+  
+settings();
+//by clicking new quote
+$( "#new-quote" ).on('click',function() { 
+  settings();
+});
+</script>
+</body>
+</html>
